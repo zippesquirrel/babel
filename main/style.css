@@ -1,0 +1,19 @@
+h1 {
+    color:#0080ff
+}
+
+@font-face {
+    font-family: myFont;
+    src: url(sansation_light.woff);
+}
+
+* {
+    font-family: "Roboto Condensed", roboto-condensed-normal
+}
+
+.roboto-condensed-normal {
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+  font-style: normal;
+}
