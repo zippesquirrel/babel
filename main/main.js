@@ -49,7 +49,7 @@ gui.add(light, 'intensity', 0, 5, 0.01);
 const geometry = new THREE.BoxGeometry( 1, 1, 1 );
 const material = new THREE.MeshPhongMaterial({
   color: 0xFF0000,    // red (can also use a CSS color string here)
-  flatShading: true,
+  flatShading: false,
 });
 const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );

@@ -1,0 +1,38 @@
+h2 {
+    color: lightslategray
+}
+
+input:valid {
+    background-color: #836fff;
+}
+
+#input1 {
+padding: 8px 12px;
+font-size: 16px;
+line-height: 1.5;
+border: 2px solid #ddd;
+border-radius: 8px;
+outline: none;
+
+box-sizing: border-box;
+min-width: 50px;
+transform: border-color 0.2s;
+}
+
+#input1:focus {
+    border-color: #2196f3;
+}
+
+.width-tester {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    visibility: hidden;
+
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    white-space: nowrap;
+    padding: 0;
+    border: none;
+}
