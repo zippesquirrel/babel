@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "eld": "^2.0.3",
     "obscenity": "^0.4.6",
     "three": "^0.184.0"
   },
