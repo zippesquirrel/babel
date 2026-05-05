@@ -4,21 +4,30 @@ h2 {
     color: lightslategray
 }
 
-input:valid {
-    background-color: #836fff;
+html {
+  display: block;
+  min-height: 100vh;
+  background-image: linear-gradient(to bottom, rgb(57, 55, 180), rgb(90, 75, 228), rgb(194, 104, 236));
 }
 
+
+
+/* input:valid {
+    background-color: #a4ebca;
+} */
+
 #input1 {
-padding: 8px 12px;
-font-size: 16px;
+padding: 10px 12px;
+font-size: 24px;
 line-height: 1.5;
 border: 2px solid #ddd;
-border-radius: 8px;
+border-radius: 12px;
 outline: none;
 
 box-sizing: border-box;
-min-width: 10px;
-transform: border-color 0.2s;
+min-width: 24px;
+transition: border-color 0.5s;
+transition: background-color 0.5s;
 }
 
 #input1:focus {
@@ -42,7 +51,9 @@ transform: border-color 0.2s;
 /*=================== 3d bull ===================*/
 
 
-
+:root{
+  --offset: -200;
+}
 
 *, *::before, *::after {
     padding: 0;
@@ -52,34 +63,53 @@ transform: border-color 0.2s;
 
 body {
   font-family: Roboto, sans-serif;
-  background-color: #000;
   color: #fff;
   min-height: 20vh;
   display: grid;
   place-items: center;
   overflow: hidden;
-  perspective: 600px;
-  perspective-origin: 50% 400%;
+
   
-  * {
+}
+
+.perspective-wrapper{
+  perspective: 100px;
+  perspective-origin: 50% 800%;
+  width:100%;
+  height:100%;
+  position:absolute;
+
+  mask-image: linear-gradient(
+    to bottom,
+    black 60%,
+    transparent 100%
+  );
+
+  height: 60vh;
+  overflow: hidden;
+}
+
+.scene, .texts, .text {
     transform-style: preserve-3d;
-  }
 }
 
 .scene {
-  transform: translateZ(-500px)
-  translatey(500px);
+  
+  transform: translateZ(-1000px)
+  translateY(70vh);
   position: absolute;
+  
   
   * { position: absolute; }
 }
 
 .texts {
   font-size: 6vmin;
+  will-change: transform;
   animation: texts 12s infinite linear;
 
   &::after {
-    content: '   babel   ';
+    /* content: '   babel   '; */
     position: absolute;
     inset: -7.5em -1.5em;
     background-image: linear-gradient(to right, transparent, 0%, black, 90%, transparent);
@@ -89,8 +119,15 @@ body {
 .text {
   animation: text 20s calc(var(--text) * -2s) infinite linear;
   color: white;
+  will-change: transform;
+  
   
   span {
+    padding-top:0px;
+    margin-top:0px;
+    /* background-color: blue; */
+    will-change: transform;
+    backface-visibility: hidden;
     inset: -1em;
     display: grid;
     place-items: center;
@@ -98,12 +135,12 @@ body {
     user-select: none;
     transform:
       
-      translateY(calc((var(--i) + 15) * -0.025em))
-      rotateY(calc(var(--i) * 8deg)) /* letter spacing */
+      translateY(calc((var(--i) - var(--offset)) * -0.025em))
+      rotateY(calc(var(--i) * 7deg)) /* letter spacing */
       /* spiral radius */
-      translateZ(5em)
+      translateZ(calc(1 * 5em))
       /* char rotate */
-      rotateZ(-1.7deg);
+      rotateZ(-2deg);
   }
 }
 

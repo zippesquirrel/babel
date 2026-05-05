@@ -9,23 +9,26 @@ const classifier = await pipeline('sentiment-analysis');
 let caught_bans = new Array()
 let positive_array = new Array()
 
+const wide_chars = ['m','M','w','W']
+const narrow_chars = ['I','i','l']
+
 // lil gui
 const params = { threshold: 0.99 }
 const gui = new GUI();
 gui.add(params, "threshold", 0.9, 1, 0.001);
 
-const blacklist = ['sigma', 'chingchong','yourmom','yomama','yourmama',
+const blacklist = 
+['sigma', 'chingchong','yourmom','yomama','yourmama',
   'yomom','cracker','frog','chinkylee','bokchoylee','adolf','hitler','nazi',
   'swastika','gay','woke', "fart", "queef", "shart", "skidmark", "dingleberry", 
   "turd", "poop", "peepee", "weeweze", "weiner", "schlong", "dong",
-  "wang", "willy", "hooha", "vajayjay", "coochie", "cooch",
-  "punani", "snatch", "muff", "beaver", "box", "beef curtains","epstein","jeffrey",
+  "wang", "willy","epstein","jeffrey",
   "trump","coloniz","black", "choppleganger", "chud", "foid", "femoid", "chopped", 
   "maximillianbobrossian", "smorganboard", "calvin klein", "sixseven", "67", "six7", 
   "6seven", "six-seven","69", "rizzler", "niger", "palestine", "iran", "israel", "jew", 
   "skibidi", "northkorea", "kimjon", "china","russia","ukraine", "isreal", "isreel", "yahu", "precum", "netanyahu"]
 
-const whitelist = ['cookies']
+const whitelist = ['cookie','love']
 // obscenity function
 
 import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
@@ -58,7 +61,7 @@ console.log(whitelistRegex)
 function checkInput(string) {
   let profanityBool = new Boolean
 
-  if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (eld.detect(string).language !== "en" && !whitelistRegex.test(string.toLowerCase) )) {
+  if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (eld.detect(string).language !== "en" && !whitelistRegex.test(string.toLowerCase()) )) {
 
     profanityBool = true
     globalProfanityBool = true
@@ -89,7 +92,21 @@ function SpiralAppend(char, index){
   newParagraph.style.setProperty("--i",index);
 
   container.appendChild(newParagraph)
-}
+};
+
+function CharWidth(char, epsilon){
+  if (wide_chars.includes(char)){
+    
+    return (1+epsilon)
+    
+  } else if (narrow_chars.includes(char)){
+    return (1-epsilon)
+  } else {
+    
+    return 1
+    
+  };
+};
 
 
 
@@ -134,16 +151,18 @@ inputElement.addEventListener("keydown",
       allowed = true
       let valueLen = 0;
       for (let i = 0; i < valueNoTrim.length; i++){
-        console.log(valueNoTrim.clientWidth)
-        SpiralAppend(valueNoTrim.charAt(i),i+index);
+        let char = valueNoTrim.charAt(i);
+        // broken rn </3 CharWidth(char,0.1)
+        SpiralAppend(char,i+index);
         valueLen ++;
-      }
-      index += valueLen + 1
-      console.log(index)
+      };
+      index += valueLen + 1;
+      document.documentElement.style.setProperty('--offset',index-300);
+      console.log(index);
 
     } else {
-      allowed = false
-    }
+      allowed = false;
+    };
 
       // == debug logging ==
       // console.log("allowed: " + allowed)
@@ -151,10 +170,10 @@ inputElement.addEventListener("keydown",
       // console.log("threshold: " + params.threshold)
       // console.log("high nuff: " + (sentiment.score > params.threshold))
       // console.log("id: " + event.target.id)
-    document.getElementById("verdict").innerHTML=displayAllowed(allowed, event.target.id)
+    document.getElementById("verdict").innerHTML=displayAllowed(allowed, event.target.id);
 
-    console.log(caught_bans)
+    console.log(caught_bans);
 
-    inputElement.value=""
+    inputElement.value="";
     
 })
