@@ -3,18 +3,21 @@ import { eld } from 'eld/large' // use .mjs extension for version <18
 import GUI from 'lil-gui'; 
 import fs from 'fs';
 
-// console.log(fs.readFile("snitch.txt"));
-
 env.backends.onnx.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/';
-
-
-let caught_bans = new Array()
 const classifier = await pipeline('sentiment-analysis');
 
-const banned_words = ['sigma', 'chingchong','yourmom','yomama','yourmama',
+let caught_bans = new Array()
+let positive_array = new Array()
+
+// lil gui
+const params = { threshold: 0.99 }
+const gui = new GUI();
+gui.add(params, "threshold", 0.9, 1, 0.001);
+
+const blacklist = ['sigma', 'chingchong','yourmom','yomama','yourmama',
   'yomom','cracker','frog','chinkylee','bokchoylee','adolf','hitler','nazi',
   'swastika','gay','woke', "fart", "queef", "shart", "skidmark", "dingleberry", 
-  "turd", "poop", "peepee", "weewee", "weiner", "schlong", "dong",
+  "turd", "poop", "peepee", "weeweze", "weiner", "schlong", "dong",
   "wang", "willy", "hooha", "vajayjay", "coochie", "cooch",
   "punani", "snatch", "muff", "beaver", "box", "beef curtains","epstein","jeffrey",
   "trump","coloniz","black", "choppleganger", "chud", "foid", "femoid", "chopped", 
@@ -22,6 +25,7 @@ const banned_words = ['sigma', 'chingchong','yourmom','yomama','yourmama',
   "6seven", "six-seven","69", "rizzler", "niger", "palestine", "iran", "israel", "jew", 
   "skibidi", "northkorea", "kimjon", "china","russia","ukraine", "isreal", "isreel", "yahu", "precum", "netanyahu"]
 
+const whitelist = ['cookies']
 // obscenity function
 
 import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
@@ -31,44 +35,41 @@ const matcher = new RegExpMatcher({
     ...englishRecommendedTransformers,
 })
 
-const params = { threshold: 0.99 }
-
-
-// lil gui
-const gui = new GUI();
-gui.add(params, "threshold", 0.9, 1, 0.001);
-
-
 
 // profanity check
-
-// let userAnswer = new String;
 
 let globalProfanityBool = new Boolean
 
 const inputElement = document.getElementById("input1")
 
-const banned_string = banned_words.join('\\b|\\b')
-    // console.log(banned_string)
-    const regex = RegExp(`\\b${banned_string}\\b`)
-    console.log(regex)
+function toRegex(arr,separator){
+  const arrayString = arr.join(`${separator}|${separator}`)
+  const arrayRegex = RegExp(`\\b${arrayString}\\b`)
+  return arrayRegex
+}
+// const blacklistString = blacklist.join('\\b|\\b')
+//     // console.log(banned_string)
+// const blacklistRegex = RegExp(`\\b${blacklistString}\\b`)
+const blacklistRegex = toRegex(blacklist,'\\b');
+const whitelistRegex = toRegex(whitelist, '\\b')
+console.log(blacklistRegex);
+console.log(whitelistRegex)
 
 function checkInput(string) {
   let profanityBool = new Boolean
-  if (matcher.hasMatch(string) || regex.test(string.toLowerCase()) || eld.detect(string).language !== "en") {
-    // console.log('Profanity detected.');
+
+  if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (eld.detect(string).language !== "en" && !whitelistRegex.test(string.toLowerCase) )) {
+
     profanityBool = true
     globalProfanityBool = true
     caught_bans.push(string)
-    // event.target.style.backgroundColor = "#ff0000";
-    } 
+  } 
     // no profanity
-    else {
+  else {
     profanityBool = false
     globalProfanityBool = false
-    // event.target.style.backgroundColor = "green";
-    }
-    document.getElementById("profanity").innerText = profanityBool
+  }
+  document.getElementById("profanity").innerText = profanityBool
 }
 
 function displayAllowed(bool, id) {
@@ -79,7 +80,20 @@ function displayAllowed(bool, id) {
   }
 }
 
+const container = document.getElementById("dynamic-container");
 
+
+function SpiralAppend(char, index){
+  const newParagraph = document.createElement("span");
+  newParagraph.textContent = char;
+  newParagraph.style.setProperty("--i",index);
+
+  container.appendChild(newParagraph)
+}
+
+
+
+let index = 14
 
 inputElement.addEventListener("keydown", 
   async function (event) {
@@ -87,10 +101,6 @@ inputElement.addEventListener("keydown",
     // console.log("Regex:")
     
     let allowed = new Boolean
-    // old text for live listener/update
-    // const value = event.target.value;
-    // document.getElementById("output").innerText = value;
-    // userAnswer = value;
 
     // return is used to exit the function (don't bother if the key isn't enter)
     if (event.key !== 'Enter') return;
@@ -98,32 +108,42 @@ inputElement.addEventListener("keydown",
     // prevents browser from fucking with form
     event.preventDefault();
 
+    const valueNoTrim = inputElement.value
     // remove whitespaces
     const value = inputElement.value.trim();
+
     // return if empty
     if (!value) return;
-      console.log(eld.detect(value))
-      console.log(regex.test(value.toLowerCase()))
-      console.log((value.toLowerCase().replace(/\s/g,"")));
-      // console.log(banned_words.some(CheckWords()));
-      
-      // console.log("some check"+banned_words.some(CheckWords(value)));
-      
-      // actual gizmo
-      console.log(value);
+    console.log(value+ "detected as: " + eld.detect(value).language);
+    console.log((whitelistRegex.test(value.toLowerCase)))
+    console.log(((eld.detect(value).language !== "en") && (whitelistRegex.test(value.toLowerCase)===false )));
+    console.log(blacklistRegex.test(value.toLowerCase()));
+    console.log((value.toLowerCase().replace(/\s/g,"")));
+     
+    // actual gizmo
+    console.log(value);
 
-      checkInput(value);
-      const result = await classifier(value);
+    checkInput(value);
+    const result = await classifier(value);
 
-      let sentiment = result[0];
-      console.log(sentiment)
-      document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`
+    let sentiment = result[0];
+    console.log(sentiment)
+    document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`
       
-      if (((sentiment.score > params.threshold) && !globalProfanityBool)&& sentiment.label === "POSITIVE") {
-        allowed = true
-      } else {
-        allowed = false
+    if (((sentiment.score > params.threshold) && !globalProfanityBool)&& sentiment.label === "POSITIVE") {
+      allowed = true
+      let valueLen = 0;
+      for (let i = 0; i < valueNoTrim.length; i++){
+        console.log(valueNoTrim.clientWidth)
+        SpiralAppend(valueNoTrim.charAt(i),i+index);
+        valueLen ++;
       }
+      index += valueLen + 1
+      console.log(index)
+
+    } else {
+      allowed = false
+    }
 
       // == debug logging ==
       // console.log("allowed: " + allowed)
@@ -131,9 +151,9 @@ inputElement.addEventListener("keydown",
       // console.log("threshold: " + params.threshold)
       // console.log("high nuff: " + (sentiment.score > params.threshold))
       // console.log("id: " + event.target.id)
-      document.getElementById("verdict").innerHTML=displayAllowed(allowed, event.target.id)
+    document.getElementById("verdict").innerHTML=displayAllowed(allowed, event.target.id)
 
-      console.log(caught_bans)
+    console.log(caught_bans)
 
     inputElement.value=""
     

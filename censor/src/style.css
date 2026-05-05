@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto: 700");
+
 h2 {
     color: lightslategray
 }
@@ -15,7 +17,7 @@ border-radius: 8px;
 outline: none;
 
 box-sizing: border-box;
-min-width: 50px;
+min-width: 10px;
 transform: border-color 0.2s;
 }
 
@@ -36,3 +38,81 @@ transform: border-color 0.2s;
     padding: 0;
     border: none;
 }
+
+/*=================== 3d bull ===================*/
+
+
+
+
+*, *::before, *::after {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+  font-family: Roboto, sans-serif;
+  background-color: #000;
+  color: #fff;
+  min-height: 20vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  perspective: 600px;
+  perspective-origin: 50% 400%;
+  
+  * {
+    transform-style: preserve-3d;
+  }
+}
+
+.scene {
+  transform: translateZ(-500px)
+  translatey(500px);
+  position: absolute;
+  
+  * { position: absolute; }
+}
+
+.texts {
+  font-size: 6vmin;
+  animation: texts 12s infinite linear;
+
+  &::after {
+    content: '   babel   ';
+    position: absolute;
+    inset: -7.5em -1.5em;
+    background-image: linear-gradient(to right, transparent, 0%, black, 90%, transparent);
+  }
+}
+
+.text {
+  animation: text 20s calc(var(--text) * -2s) infinite linear;
+  color: white;
+  
+  span {
+    inset: -1em;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    user-select: none;
+    transform:
+      
+      translateY(calc((var(--i) + 15) * -0.025em))
+      rotateY(calc(var(--i) * 8deg)) /* letter spacing */
+      /* spiral radius */
+      translateZ(5em)
+      /* char rotate */
+      rotateZ(-1.7deg);
+  }
+}
+
+@keyframes texts {
+  from { transform: rotateZ(0deg) rotateX(00deg) rotateZ(360deg); }
+  to { transform: rotateZ(360deg) rotateX(00deg) rotateZ(0deg); }
+}
+
+@keyframes text {
+  to { rotate: y -1turn; }
+}
+
