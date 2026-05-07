@@ -1,7 +1,29 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto: 700");
 
+*{
+  font-family: Verdana, sans-serif;
+}
+
+
+h1{
+  
+  padding-top:5%;
+  padding-bottom: 4%;
+  font-family: Verdana, sans-serif;
+}
+
+h3 {
+  position: absolute;
+  top:5%;
+  z-index: -1;
+  font-size: 200px;
+  opacity: 7%;
+}
+
 h2 {
-    color: lightslategray
+
+  padding:5%;
+    color: rgb(216, 189, 228)
 }
 
 html {
@@ -21,6 +43,12 @@ html {
   inherits: true;
   initial-value: -200;
 }
+
+/* @property --brightness {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0.5;
+} */
 
 /* input:valid {
     background-color: #a4ebca;
@@ -62,6 +90,9 @@ transition: background-color 0.5s;
 
 /*=================== 3d bull ===================*/
 
+#legible {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
 /* :root{
   --offset: -200;
@@ -138,12 +169,14 @@ body {
 .text {
   animation: text 20s calc(var(--text) * -2s) infinite linear;
   color: white;
+  
   will-change: transform;
 
   
   span {
     transition: --offset 0.5s cubic-bezier(0.33,1,0.68,1);
     font-family: Masonic;
+    opacity: var(--brightness);
     padding-top:0px;
     margin-top:0px;
     /* background-color: blue; */

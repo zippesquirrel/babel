@@ -13,9 +13,9 @@ const wide_chars = ['m','M','w','W']
 const narrow_chars = ['I','i','l']
 
 // lil gui
-const params = { threshold: 0.99 }
-const gui = new GUI();
-gui.add(params, "threshold", 0.9, 1, 0.001);
+const params = { threshold: 0.9 }
+// const gui = new GUI();
+// gui.add(params, "threshold", 0.5, 1, 0.001);
 
 const blacklist = 
 ['sigma', 'chingchong','yourmom','yomama','yourmama',
@@ -34,7 +34,7 @@ const whitelist = ['cookie','love']
 // obscenity function
 
 import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
-import { TIMEOUT } from 'dns';
+// import { TIMEOUT } from 'dns';
 
 const matcher = new RegExpMatcher({
     ...englishDataset.build(),
@@ -58,8 +58,10 @@ function toRegex(arr,separator){
 // const blacklistRegex = RegExp(`\\b${blacklistString}\\b`)
 const blacklistRegex = toRegex(blacklist,'\\b');
 const whitelistRegex = toRegex(whitelist, '\\b');
-console.log(blacklistRegex);
-console.log(whitelistRegex);
+
+//regex logging
+// console.log(blacklistRegex);
+// console.log(whitelistRegex);
 
 function checkInput(string) {
   let profanityBool = new Boolean
@@ -75,7 +77,7 @@ function checkInput(string) {
     profanityBool = false;
     globalProfanityBool = false;
   };
-  document.getElementById("profanity").innerText = profanityBool;
+  // document.getElementById("profanity").innerText = profanityBool;
 }
 
 function displayAllowed(bool, id) {
@@ -89,10 +91,11 @@ function displayAllowed(bool, id) {
 const container = document.getElementById("dynamic-container");
 
 
-function SpiralAppend(char, index){
+function SpiralAppend(char, index, bright){
   const newParagraph = document.createElement("span");
   newParagraph.textContent = char;
   newParagraph.style.setProperty("--i",index);
+  newParagraph.style.setProperty("--brightness",bright);
 
   container.appendChild(newParagraph);
 };
@@ -113,7 +116,7 @@ function CharWidth(char, epsilon){
 
 
 
-let index = 14
+let index = 0
 
 inputElement.addEventListener("keydown", 
   async function (event) {
@@ -149,7 +152,7 @@ inputElement.addEventListener("keydown",
 
     let sentiment = result[0];
     console.log(sentiment);
-    document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`;
+    // document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`;
       
     if (((sentiment.score > params.threshold) && !globalProfanityBool)&& sentiment.label === "POSITIVE") {
       allowed = true;
@@ -157,8 +160,8 @@ inputElement.addEventListener("keydown",
       
       for (let i = 0; i < valueNoTrim.length; i++){
         let char = valueNoTrim.charAt(i);
-        // broken rn </3 CharWidth(char,0.1)
-        setTimeout(SpiralAppend(char,i+index),1000);
+        console.log("opacity:" + (12*Math.pow(sentiment.score,128)-11)); 
+        SpiralAppend(char,i+index,(12*Math.pow(sentiment.score,128)-11));
         
         valueLen ++;
       };
