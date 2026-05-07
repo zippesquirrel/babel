@@ -17,7 +17,7 @@ function updateInputWidth() {
     const contentWidth  = widthTester.offsetWidth;
     const totalWidth = contentWidth + paddingLeft + paddingRight
 
-    input.style.width = `${totalWidth+24}px`
+    input.style.width = `${1.7*totalWidth+4}px`
 }
 
 input.addEventListener('input', updateInputWidth);

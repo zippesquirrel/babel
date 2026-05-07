@@ -25,8 +25,10 @@ const blacklist =
   "wang", "willy","epstein","jeffrey",
   "trump","coloniz","black", "choppleganger", "chud", "foid", "femoid", "chopped", 
   "maximillianbobrossian", "smorganboard", "calvin klein", "sixseven", "67", "six7", 
-  "6seven", "six-seven","69", "rizzler", "niger", "palestine", "iran", "israel", "jew", 
-  "skibidi", "northkorea", "kimjon", "china","russia","ukraine", "isreal", "isreel", "yahu", "precum", "netanyahu"]
+  "6seven", "six-seven","69", "rizzler", "niger", //the country
+  "palestine", "iran", "israel", "jew", 
+  "skibidi", "northkorea", "kimjon", "china","russia","ukraine", "isreal", "isreel", "yahu", "precum", 
+  "netanyahu", "xi","jinping","mao","zhedong","zedong","downbad","kirk","charlie","tate"]
 
 const whitelist = ['cookie','love']
 // obscenity function
@@ -125,7 +127,8 @@ inputElement.addEventListener("keydown",
     // prevents browser from fucking with form
     event.preventDefault();
 
-    const valueNoTrim = inputElement.value
+    const valueNoTrim = "• "+inputElement.value
+    
     // remove whitespaces
     const value = inputElement.value.trim();
 
@@ -150,6 +153,7 @@ inputElement.addEventListener("keydown",
     if (((sentiment.score > params.threshold) && !globalProfanityBool)&& sentiment.label === "POSITIVE") {
       allowed = true
       let valueLen = 0;
+      
       for (let i = 0; i < valueNoTrim.length; i++){
         let char = valueNoTrim.charAt(i);
         // broken rn </3 CharWidth(char,0.1)

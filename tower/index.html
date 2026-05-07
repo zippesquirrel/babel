@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="my">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -7,13 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>censor</title>
   </head>
-  <body>
 
+  <body>
+    
     <div id="app"></div>
       <p id="profanity">null</p>
       <p id="sentiment">null</p>
       <form>
-        <input type = "text" id="input1" class = "front" placeholder="Type something nice..." required autofocus/>
+        <input type = "text" id="input1" class = "front" maxlength=64 placeholder="Type something nice..." required autofocus/>
       </form>
       <span id = "widthTester" class = "width-tester"></span>
       <p id="verdict">verdict:</p>
@@ -23,6 +24,7 @@
     <div clas="perspective-wrapper">
       <div class="scene">
         <div class="texts">
+          
           <div id = "dynamic-container" class="text" style="--text: 0;">
             <span style="--i: 0;">s</span>
             <span style="--i: 1.25;">a</span>

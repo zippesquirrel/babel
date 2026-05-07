@@ -11,6 +11,10 @@ html {
 }
 
 
+@font-face{
+  font-family: Masonic;
+  src: url("Masonic Cipher.ttf");
+}
 
 /* input:valid {
     background-color: #a4ebca;
@@ -27,6 +31,7 @@ outline: none;
 box-sizing: border-box;
 min-width: 24px;
 transition: border-color 0.5s;
+transition: width 1s;
 transition: background-color 0.5s;
 }
 
@@ -123,6 +128,7 @@ body {
   
   
   span {
+    font-family: Masonic;
     padding-top:0px;
     margin-top:0px;
     /* background-color: blue; */
