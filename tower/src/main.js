@@ -34,54 +34,55 @@ const whitelist = ['cookie','love']
 // obscenity function
 
 import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
+import { TIMEOUT } from 'dns';
 
 const matcher = new RegExpMatcher({
     ...englishDataset.build(),
     ...englishRecommendedTransformers,
-})
+});
 
 
 // profanity check
 
-let globalProfanityBool = new Boolean
+let globalProfanityBool = new Boolean;
 
-const inputElement = document.getElementById("input1")
+const inputElement = document.getElementById("input1");
 
 function toRegex(arr,separator){
-  const arrayString = arr.join(`${separator}|${separator}`)
-  const arrayRegex = RegExp(`\\b${arrayString}\\b`)
-  return arrayRegex
-}
+  const arrayString = arr.join(`${separator}|${separator}`);
+  const arrayRegex = RegExp(`\\b${arrayString}\\b`);
+  return arrayRegex;
+};
 // const blacklistString = blacklist.join('\\b|\\b')
 //     // console.log(banned_string)
 // const blacklistRegex = RegExp(`\\b${blacklistString}\\b`)
 const blacklistRegex = toRegex(blacklist,'\\b');
-const whitelistRegex = toRegex(whitelist, '\\b')
+const whitelistRegex = toRegex(whitelist, '\\b');
 console.log(blacklistRegex);
-console.log(whitelistRegex)
+console.log(whitelistRegex);
 
 function checkInput(string) {
   let profanityBool = new Boolean
 
   if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (eld.detect(string).language !== "en" && !whitelistRegex.test(string.toLowerCase()) )) {
 
-    profanityBool = true
-    globalProfanityBool = true
-    caught_bans.push(string)
+    profanityBool = true;
+    globalProfanityBool = true;
+    caught_bans.push(string);
   } 
     // no profanity
   else {
-    profanityBool = false
-    globalProfanityBool = false
-  }
-  document.getElementById("profanity").innerText = profanityBool
+    profanityBool = false;
+    globalProfanityBool = false;
+  };
+  document.getElementById("profanity").innerText = profanityBool;
 }
 
 function displayAllowed(bool, id) {
   if (bool){
-    return '<p>allowed</p>'
+    return '<p>allowed</p>';
   } else {
-    return '<p>not allowed</p>'
+    return '<p>not allowed</p>';
   }
 }
 
@@ -93,19 +94,19 @@ function SpiralAppend(char, index){
   newParagraph.textContent = char;
   newParagraph.style.setProperty("--i",index);
 
-  container.appendChild(newParagraph)
+  container.appendChild(newParagraph);
 };
 
 function CharWidth(char, epsilon){
   if (wide_chars.includes(char)){
     
-    return (1+epsilon)
+    return (1+epsilon);
     
   } else if (narrow_chars.includes(char)){
-    return (1-epsilon)
+    return (1-epsilon);
   } else {
     
-    return 1
+    return 1;
     
   };
 };
@@ -119,7 +120,7 @@ inputElement.addEventListener("keydown",
     
     // console.log("Regex:")
     
-    let allowed = new Boolean
+    let allowed = new Boolean;
 
     // return is used to exit the function (don't bother if the key isn't enter)
     if (event.key !== 'Enter') return;
@@ -127,7 +128,7 @@ inputElement.addEventListener("keydown",
     // prevents browser from fucking with form
     event.preventDefault();
 
-    const valueNoTrim = "• "+inputElement.value
+    const valueNoTrim = "• "+inputElement.value;
     
     // remove whitespaces
     const value = inputElement.value.trim();
@@ -135,7 +136,7 @@ inputElement.addEventListener("keydown",
     // return if empty
     if (!value) return;
     console.log(value+ "detected as: " + eld.detect(value).language);
-    console.log((whitelistRegex.test(value.toLowerCase)))
+    console.log((whitelistRegex.test(value.toLowerCase)));
     console.log(((eld.detect(value).language !== "en") && (whitelistRegex.test(value.toLowerCase)===false )));
     console.log(blacklistRegex.test(value.toLowerCase()));
     console.log((value.toLowerCase().replace(/\s/g,"")));
@@ -147,17 +148,18 @@ inputElement.addEventListener("keydown",
     const result = await classifier(value);
 
     let sentiment = result[0];
-    console.log(sentiment)
-    document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`
+    console.log(sentiment);
+    document.getElementById("sentiment").innerText=`label: ${sentiment.label} confidence: ${sentiment.score.toFixed(4)}`;
       
     if (((sentiment.score > params.threshold) && !globalProfanityBool)&& sentiment.label === "POSITIVE") {
-      allowed = true
+      allowed = true;
       let valueLen = 0;
       
       for (let i = 0; i < valueNoTrim.length; i++){
         let char = valueNoTrim.charAt(i);
         // broken rn </3 CharWidth(char,0.1)
-        SpiralAppend(char,i+index);
+        setTimeout(SpiralAppend(char,i+index),1000);
+        
         valueLen ++;
       };
       index += valueLen + 1;

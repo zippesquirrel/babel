@@ -16,6 +16,12 @@ html {
   src: url("Masonic Cipher.ttf");
 }
 
+@property --offset {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: -200;
+}
+
 /* input:valid {
     background-color: #a4ebca;
 } */
@@ -27,6 +33,7 @@ line-height: 1.5;
 border: 2px solid #ddd;
 border-radius: 12px;
 outline: none;
+z-index: 12;
 
 box-sizing: border-box;
 min-width: 24px;
@@ -56,9 +63,9 @@ transition: background-color 0.5s;
 /*=================== 3d bull ===================*/
 
 
-:root{
+/* :root{
   --offset: -200;
-}
+} */
 
 *, *::before, *::after {
     padding: 0;
@@ -114,10 +121,17 @@ body {
   animation: texts 12s infinite linear;
 
   &::after {
-    /* content: '   babel   '; */
+    content: "";
+    z-index: 99;
+    width: 10em;
+    
     position: absolute;
-    inset: -7.5em -1.5em;
-    background-image: linear-gradient(to right, transparent, 0%, black, 90%, transparent);
+    inset: -8.5em -5em;
+    background-image: linear-gradient(90deg,rgba(58, 55, 181, 1) 0%, rgba(151, 109, 207, 1) 50%, rgba(58, 55, 181, 1) 100%);
+    opacity: 1;
+    
+    backdrop-filter: blur(10px);
+    
   }
 }
 
@@ -125,15 +139,16 @@ body {
   animation: text 20s calc(var(--text) * -2s) infinite linear;
   color: white;
   will-change: transform;
-  
+
   
   span {
+    transition: --offset 0.5s cubic-bezier(0.33,1,0.68,1);
     font-family: Masonic;
     padding-top:0px;
     margin-top:0px;
     /* background-color: blue; */
     will-change: transform;
-    backface-visibility: hidden;
+    backface-visibility: visible;
     inset: -1em;
     display: grid;
     place-items: center;
@@ -159,3 +174,7 @@ body {
   to { rotate: y -1turn; }
 }
 
+@keyframes offset-scroll{
+  from { --offset: 0; }
+  to   { --offset: 100;}
+}
