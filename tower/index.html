@@ -1,31 +1,47 @@
 <!doctype html>
-<html lang="my">
+<html lang="en">
   <head>
+    <!-- font shenanigans-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.png" />
     <link rel="stylesheet" href="src/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>censor</title>
+    <title>The Spire</title>
   </head>
 
   <body>
-    <h1>Babel</h1>
-    <h3 class="background-text">BABEL</h3>
-    <h2>An interactive installation on human joy</h2>
-    <div id="app"></div>
+    <h1 class="playfair-display-heavy">The Spire</h1>
+    <h1 class="shadow playfair-display-italic" >SPIRE SPIRE SPIRE</h3>
+    <h2 class="playfair-display-heavy">An interactive installation on human joy</h2>
+    <h3 class="playfair-display-normal">Today's prompt:</h3>
+    <h3 class="playfair-display-italic">What do you want to be when you grow up?</h3>
+    <p id="height" class="playfair-display-normal">Height: 0m</p>
+    <div class="hideable blurb" id = "left-blurb">
+      <h2 class="playfair-display-heavy" >What is this?</h2>
+      <p class="playfair-display-normal">The idea behind this project is very simple. So much joy in our world is left unshared. It's a tragedy, but something I hope to fix. Imagine if all the positive things that we keep in our hearts could build a spire reaching up.</p>
+    </div>
+    <div class="hideable blurb" id = "right-blurb">
+      <h2 class="playfair-display-heavy">What do I do?</h2>
+      <p class="playfair-display-normal">Write something positive down in the box below, answering the prompt. If it doesn't let you answer, try using full sentences. Please know that what you write will be seen by the school, so try to truly share joy.</p>
+    </div>
+    <div id="app" class="hideable"></div>
       <!-- <p id="profanity">null</p>
       <p id="sentiment">null</p> -->
-      <form>
-        <input type = "text" id="input1" class = "front" maxlength=64 placeholder="Type something nice..." required autofocus/>
+      <form class = "hideable">
+        <input type = "text" id="input1" class="hideable playfair-display-italic" maxlength=64 placeholder="Answer here..." required autofocus/>
       </form>
       <span id = "widthTester" class = "width-tester"></span>
-      <p id="verdict">verdict:</p>
+      <!-- <p id="verdict">verdict:</p> -->
     </div>
-
+    <!-- <p id="shadow"></p> -->
     <!-- 3d bull-->
-    <div clas="perspective-wrapper">
+    <div>
       <div class="scene">
-        <div class="texts">
+        <div class="texts playfair-display-normal" >
           
           <div id = "dynamic-container" class="text" style="--text: 0;">
             <!-- <span style="--i: 0;">s</span>
@@ -45,6 +61,17 @@
         </div>  
       </div>
     </div>
+    <h2 id="signature" class="playfair-display-italic">Made with love (and 20 hours of work) by Max K. in 10th grade</h2>
+    <h2 id="display-info" class="playfair-display-italic">Press the backtik (to the left of the 1 key) to show/hide everything</h2>
+    <script>
+    function cullByID(id){
+      const elements = [...document.getElementsByClassName(id)];
+      console.log(elements)
+      for (var j = 0; j < elements.length; j++) {
+        elements[j].remove()
+      }
+    }
+    </script>
     <script type="module" src="/src/main.js"></script>
     <script type="module" src="/src/frontend.js"></script>
 
