@@ -1,9 +1,10 @@
 {
   "dependencies": {
-    "eld": "^2.0.3",
+    "@xenova/transformers": "^2.17.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
     "lil-gui": "^0.21.0",
-    "obscenity": "^0.4.6",
-    "three": "^0.184.0"
+    "obscenity": "^0.4.6"
   },
   "devDependencies": {
     "vite": "^8.0.10"

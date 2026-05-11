@@ -1,16 +1,19 @@
-import { env, pipeline } from '@huggingface/transformers';
+// import { env, pipeline } from '@huggingface/transformers';
 import { RegExpMatcher, TextCensor, englishDataset, englishRecommendedTransformers } from 'obscenity';
-import { eld } from 'eld/large';
+// import { eld } from 'eld/large';
+import { detect } from 'tinyld/light';
 import GUI from 'lil-gui'; 
 import fs from 'fs';
-console.log("starting...")
-env.backends.onnx.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/';
-const classifier = await pipeline('sentiment-analysis');
+
+// old hugging-face stuff
+//
+// console.log("starting...")
+// env.backends.onnx.wasm.wasmPaths = 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/';
+// const classifier = await pipeline('sentiment-analysis');
 console.log("ready!")
 // document.getElementById("input1").style.setProperty("visibility","visible")
 let caught_bans = new Array();
 let positive_array = new Array();
-
 
 
 const wide_chars = ['m','M','w','W'];
@@ -110,7 +113,7 @@ const whitelistRegex = toRegex(whitelist, '\\b');
 function checkInput(string) {
   let profanityBool = new Boolean
 
-  if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (eld.detect(string).language !== "en" && !whitelistRegex.test(string.toLowerCase()) )) {
+  if (matcher.hasMatch(string) || blacklistRegex.test(string.toLowerCase()) || (detect('i love you so much') !== "en" && !whitelistRegex.test(string.toLowerCase()) )) {
     
     profanityBool = true;
     globalProfanityBool = true;
@@ -207,7 +210,7 @@ inputElement.addEventListener("keydown",
     if (!value) return;
 
     //regex logging
-    console.log(value+ "detected as: " + eld.detect(value).language);
+    console.log(value+ "detected as lang: " + detect('i love you so much'));
     // console.log((whitelistRegex.test(value.toLowerCase)));
     // console.log(((eld.detect(value).language !== "en") && (whitelistRegex.test(value.toLowerCase)===false )));
     // console.log(blacklistRegex.test(value.toLowerCase()));
@@ -217,7 +220,12 @@ inputElement.addEventListener("keydown",
     // console.log(value);
 
     checkInput(value);
-    const result = await classifier(value);
+    const response = await fetch('http://localhost:3001/sentiment', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: value })
+    });
+    const result = await response.json();
 
     let sentiment = result[0];
     console.log(sentiment);
@@ -256,8 +264,8 @@ inputElement.addEventListener("keydown",
     
 
     inputElement.value="";
-    // Snitch()
-    console.log(document.documentElement.style.setPropertyValue('--displayMode'))
+    // // Snitch()
+    // console.log(document.documentElement.style.setPropertyValue('--displayMode'))
     
 })
 

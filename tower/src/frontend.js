@@ -1,4 +1,4 @@
-import { update } from "three/examples/jsm/libs/tween.module.js";
+// import { update } from "three/examples/jsm/libs/tween.module.js";
 
 const input = document.getElementById('input1');
 const widthTester = document.getElementById('widthTester');
